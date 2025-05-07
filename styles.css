@@ -2,18 +2,20 @@ body {
     font-family: sans-serif;
     text-align: center;
 }
+#controls {
+    margin-bottom: 10px;
+}
 svg {
     border: 1px solid #ccc;
-    margin-top: 10px;
     background: #fafafa;
 }
-  .point { opacity: 0.6; }
-  .centroid {
+.point { opacity: 0.6; }
+.centroid {
     stroke: #000;
     stroke-width: 2px;
-  }
-  button, input {
+}
+button, input {
     margin: 0 5px;
     padding: 5px 10px;
     font-size: 1rem;
-  }
+}

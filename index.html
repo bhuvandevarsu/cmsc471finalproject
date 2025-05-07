@@ -7,15 +7,18 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>Lloyd’s k-Means on an Albers USA Map</h1>
-  <label for="k">k = </label>
-  <input type="number" id="k" value="5" min="1" max="15" />
-  <button id="reset">Reset</button>
-  <button id="next">Next Iteration</button>
+  <div id="controls">
+    <h1>Lloyd’s k-Means on an Albers USA Map</h1>
+    <label for="k">k = </label>
+    <input type="number" id="k" value="5" min="1" max="15" />
+    <button id="reset">Reset</button>
+    <button id="next">Next Iteration</button>
+    <button id="play">Play</button>
+    <button id="pause" disabled>Pause</button>
+  </div>
 
   <svg width="800" height="600"></svg>
-  <script src="https://d3js.org/d3.v7.min.js"></script>
-  <script src="https://d3js.org/topojson.v1.min.js"></script>
+
   <script src="script.js"></script>
 </body>
 </html>
