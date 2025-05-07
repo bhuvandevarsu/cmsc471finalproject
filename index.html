@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lloyd’s k-Means on an Albers USA Map</title>
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <link rel="stylesheet" href="styles.css">
@@ -11,14 +12,104 @@
     <h1>Lloyd’s k-Means on an Albers USA Map</h1>
     <label for="k">k = </label>
     <input type="number" id="k" value="5" min="1" max="15" />
-    <button id="reset">Reset</button>
+    <button id="reset">Reset (Finish Algorithm)</button>
+    <button id="reset">Step Zero</button>
     <button id="next">Next Iteration</button>
     <button id="play">Play</button>
-    <button id="pause" disabled>Pause</button>
+    <button id="pause" disabled>Pause</button>    
   </div>
+  <svg id="Llyod" width="800" height="600"></svg>
+  <br> <br>
 
-  <svg width="800" height="600"></svg>
 
+  <h1>Introduction to K-Centering Problem, and the Naive Solution</h1>
+  <div class="info-box">
+    <h2>The K-Centering Problem</h2> 
+    The k-center clustering problem is a common mathmatical situation in which,
+    given a set <b>P</b> of n points, our goal is to find the best set of k points, <b>C</b> &SubsetEqual; <b>P</b> such that the maximum
+    distance of a point in <b>P</b> to its closest point in <b>P</b> is minimized.
+
+    More simply put, given a set of locations, we want to effectively 
+    choose k of those locations as centers, and choose the best ones. A commonly given example would be
+    a set of cities, and we want to build k hospitals in those cities. When choosing the hospital locations, 
+    we want to minimize the maximum distance a patient would have to travel to reach their closest hospital (e.g. no patient has to travel more than an hour to reach a hospital).
+    
+     
+    <br> <br>
+    <a href="https://www.cs.cmu.edu/afs/cs/academic/class/15456-s14/Handouts/Har-Peled-Chap-4.pdf">https://www.cs.cmu.edu/afs/cs/academic/class/15456-s14/Handouts/Har-Peled-Chap-4.pdf</a>
+    <br>
+
+    
+    More formally, given a set of centers C, the k-center clustering price of P by C is denoted
+    by 
+    
+    <p>
+        \[\|\mathbf{P}_\mathbf{C}\|_\infty = \max_{p \in P} d(p, \mathbf{C})\]
+    </p>
+    
+    <p>
+      Note that every point in a cluster is within a distance at most 
+      \(\|\mathbf{P}_\mathbf{C}\|_\infty\) from its respective center.
+    </p>
+    
+    <p>
+      Formally, the <i>k-center problem</i> is to find a set <b>C</b> of 
+      <i>k</i> points, such that \(\|\mathbf{P}_\mathbf{C}\|_\infty\) is minimized; namely,
+    </p>
+    
+    <p>
+      \[\operatorname{opt}_\infty(\mathbf{P}, k) = \min_{\mathbf{C} \subseteq \mathbf{P}, |\mathbf{C}| = k} \|\mathbf{P}_\mathbf{C}\|_\infty\]
+    </p>
+    <h2>The Naive Solution</h2> 
+
+    The naive solution would be to generate ALL possible combinations of k points from P and
+    calculate the maximum distance of each point in P to its closest center in C for every single combination.
+    
+    Naturally, this is a brute force solution and is extremely inefficient.
+
+    <h3>Step-by-Step Process</h3>
+    <ol class="clean-list">
+      <li>Generate all possible combinations of k points from P.</li>
+      <li>For each possible subset, compute the maximum distance from every point in P to its closest center in C.</li>
+      <li>Keep track of the subset C that results in the minimum (maximum) distance.</li>
+    </ol>
+   
+    
+    <p>
+      Given \(n\) points and choosing \(k\) centers, there are a total of \( \binom{n}{k} \) possible subsets. 
+      For each subset, computing the maximum distance from each point in \(P\) to its closest center in \(C\) takes \(O(n \cdot k)\) time, 
+      as you need to check the distance for each point in \(P\) against each center in \(C\).
+    </p>
+
+    <p>
+      Thus, the overall time complexity of this naive solution is \(O(n^k) \cdot O(n \cdot k) = O(n^{k+1} \cdot k)\).
+      This incredibly inefficient time complexity makes the solution infeasible for any real data set of scale, 
+      and clues us in to the complexity of the problem, and need for more advanced algorithms.
+     </p>
+
+     Below, we demo the naive solution on a smaller subset of our data,
+     slicing it to only \(n \leq 30\) points, and solving for \(k \leq 4\) centers.
+    </div>
+  <br>
+    <h1> Naive K-Centers Visualization on Albers Map</h1>
+  <div id="controls-naive">
+    <label for="k-naive">k = </label>
+    <input type="number" id="k-naive" value="3" min="1" max="4" />
+    <button id="reset-naive">Reset (Finish Algorithm)</button>
+    <button id="step-zero-naive">Step Zero</button>
+    <button id="next-naive">Next Iteration</button>
+    <button id="play-naive">Play</button>
+    <button id="pause-naive" disabled>Pause</button>    
+  </div>
+  
+  <br>Step: <span id="step-naive"></span><br>
+  Current max distance to nearest center: <span id="max-distance-naive"></span><br>
+  Best recorded max distance to nearest center: <span id="best-distance-naive"></span><br>
+  Displaying k = <span id="num-clusters-naive"></span> clusters 
+  and n = <span id="total-points-naive"></span> total points.<br>
+  <svg id="naive-svg" width="800" height="600"></svg>
+
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
